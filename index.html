@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q0ZWKR8X9K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q0ZWKR8X9K');
+  // Contatos: conta cliques em e-mail, telefone e WhatsApp como lead
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href') || '';
+    var m = /^mailto:/i.test(h) ? 'email' : /^tel:/i.test(h) ? 'telefone' : /wa\.me|whatsapp/i.test(h) ? 'whatsapp' : null;
+    if (m) gtag('event', 'generate_lead', { method: m, link_url: h });
+  });
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Montezano Arquitetura</title>
