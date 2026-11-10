@@ -197,8 +197,16 @@ img{max-width:100%;display:block;}
 .manifesto.in .mf-l{opacity:1;transform:none;filter:none;}
 .manifesto.in .mf-l:nth-child(1){transition-delay:.55s}.manifesto.in .mf-l:nth-child(2){transition-delay:.7s}
 .manifesto.in .mf-l:nth-child(3){transition-delay:.9s}.manifesto.in .mf-l:nth-child(4){transition-delay:1.08s}
+.manifesto.rev{padding:0 0 120px clamp(22px,6vw,110px);}
+.manifesto.rev .mf-txt{justify-self:end;}
+.manifesto.rev .mf-img{clip-path:inset(0 0 0 100%);}
+.manifesto.rev.in .mf-img{clip-path:inset(0 0 0 0);}
+.mf-img video{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.18);transition:transform 2.4s cubic-bezier(.16,1,.3,1);}
+.manifesto.in .mf-img video{transform:scale(1);}
 @media (max-width:820px){.manifesto{grid-template-columns:1fr;padding:70px 0 70px;gap:40px}.mf-txt{padding:0 22px}}
-@media (prefers-reduced-motion:reduce){.mf-img{clip-path:none;transition:none}.mf-img img{transform:none;transition:none}.mf-l{opacity:1;transform:none;filter:none;transition:none}}
+@media (max-width:820px){.manifesto.rev{padding:0 0 70px}.manifesto.rev .mf-img{order:-1}.manifesto.rev .mf-txt{justify-self:start}}
+
+@media (prefers-reduced-motion:reduce){.mf-img,.manifesto.rev .mf-img{clip-path:none;transition:none}.mf-img img,.mf-img video{transform:none;transition:none}.mf-l{opacity:1;transform:none;filter:none;transition:none}}
 </style>
 </head>
 <body>
@@ -233,6 +241,16 @@ img{max-width:100%;display:block;}
       <p class="mf-l">O escritório Montezano Arquitetura é focado em projetos residenciais e de hospitalidade, pensados para a qualidade de vida e o bem-estar. Aqui, cada projeto é desenvolvido com atenção dedicada ao cliente, do primeiro esboço ao último detalhe da obra.</p>
       <p class="mf-l">Luz natural, materiais honestos e a relação com a paisagem guiam cada decisão. Buscamos espaços que convidam a desacelerar, como um banho ao ar livre no fim da tarde, seja numa casa de praia, num apartamento na cidade ou numa pousada.</p>
     </div>
+  </section>
+
+  <section class="manifesto rev" aria-label="Projeto e lugar">
+    <div class="mf-txt" data-mf>
+      <span class="sec-eyebrow mf-l">Projeto e lugar</span>
+      <h2 class="mf-l">Feita para o<br>clima e a paisagem.</h2>
+      <p class="mf-l">Cada casa nasce do lugar onde está. Sombra, ventilação cruzada e a luz filtrada pelas venezianas desenham ambientes frescos, abertos e protegidos do sol forte.</p>
+      <p class="mf-l">Varandas generosas, bancos de alvenaria e madeira tratada pelo tempo criam espaços de convívio entre o dentro e o fora, onde a vida acontece ao ritmo da natureza.</p>
+    </div>
+    <figure class="mf-img" data-mf><video id="mf-video" muted loop playsinline preload="none" poster="estar-casa-praia.jpg" width="1080" height="1080" aria-label="Varanda de casa de praia com coqueiro, venezianas de madeira e bancos de alvenaria, Montezano Arquitetura"></video></figure>
   </section>
 
   <section class="sec" id="projetos">
@@ -368,6 +386,19 @@ if(heroBg && !reduce){
 (function(){
   var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');o.unobserve(e.target);}});},{threshold:.2});
   document.querySelectorAll('.manifesto').forEach(function(el){o.observe(el);});
+})();
+(function(){
+  var v=document.getElementById('mf-video'); if(!v) return;
+  var c=navigator.connection, save=c&&(c.saveData||/2g/.test(c.effectiveType||''));
+  if(reduce||save) return; /* fica so a foto */
+  var ok=false;
+  var o=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){
+      if(!ok){ v.src=innerWidth<=820?'estar-casa-praia-720.mp4':'estar-casa-praia-1080.mp4'; ok=true; }
+      var p=v.play(); if(p&&p.catch) p.catch(function(){});
+    } else if(ok){ v.pause(); }
+  });},{rootMargin:'300px 0px'});
+  o.observe(v);
 })();
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('[data-reveal]').forEach(function(el){io.observe(el);});
